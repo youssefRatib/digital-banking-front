@@ -1,0 +1,43 @@
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-header">Accounts</div>
+    <div class="card-body">
+      <ng-template #errorTemplate>
+        <ng-container *ngIf="errorMessage ; else loading">
+          <div class="text-danger">{{errorMessage}}</div>
+        </ng-container>
+        <ng-template #loading>
+          Loading ...
+        </ng-template>
+      </ng-template>
+      <ng-container *ngIf="accountObservable | async">
+        <div class="mb-2">
+          <label>Client ID :</label>
+          <label><strong>{{customer.id}}</strong></label>
+        </div>
+        <div class="mb-2">
+          <label>Nom Client :</label>
+          <label><strong>{{customer.name}}</strong></label>
+        </div>
+        <div class="mb-2">
+          <label>Email :</label>
+          <label><strong>{{customer.email}}</strong></label>
+        </div>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>ID</th><th>Balance</th><th>Type</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let c of accountObservable | async">
+            <td>{{c.id}}</td>
+            <td>{{c.balance | number : '1.2-2'}}</td>
+            <td>{{c.type}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </div>
+  </div>
+</div>
