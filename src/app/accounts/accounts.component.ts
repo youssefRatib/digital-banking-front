@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {AccountsService} from "../services/accounts.service";
 import {catchError, Observable, throwError} from "rxjs";
-import {AccountDetails} from "../model/account.model";
+import {AccountDetails, BankingAccount} from "../model/account.model";
+import {Customer} from "../model/customer.model";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-accounts',
@@ -11,15 +13,28 @@ import {AccountDetails} from "../model/account.model";
 })
 export class AccountsComponent implements OnInit {
   accountFormGroup! : FormGroup;
+  accountBankingId! : any ;
   currentPage : number =0;
   pageSize : number =5;
   accountObservable! : Observable<AccountDetails>
   operationFromGroup! : FormGroup;
   errorMessage! :string ;
 
-  constructor(private fb : FormBuilder, private accountService : AccountsService) { }
+  constructor(private fb : FormBuilder,private route : ActivatedRoute, private accountService : AccountsService) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.accountBankingId = params['bankingAccountId'];
+    });
+    if(this.accountBankingId){
+      this.accountObservable=this.accountService.getAccount(this.accountBankingId,this.currentPage, this.pageSize).pipe(
+        catchError(err => {
+          this.errorMessage=err.message;
+          return throwError(err);
+        })
+      );
+    }
+
     this.accountFormGroup=this.fb.group({
       accountId : this.fb.control('')
     });
@@ -28,7 +43,8 @@ export class AccountsComponent implements OnInit {
       amount : this.fb.control(0),
       description : this.fb.control(null),
       accountDestination : this.fb.control(null)
-    })}
+    })
+  }
 
   handleSearchAccount() {
     let accountId : string =this.accountFormGroup.value.accountId;

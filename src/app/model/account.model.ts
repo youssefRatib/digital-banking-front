@@ -9,6 +9,13 @@ export interface AccountDetails {
   accountOperationDTOS: AccountOperation[];
 }
 
+export interface ListAccounts {
+  currentPage:          number;
+  totalPages:           number;
+  pageSize:             number;
+  bankingAccounts : BankingAccount[];
+}
+
 export interface BankingAccount {
   type:                 string;
   id:                   string;
@@ -18,10 +25,11 @@ export interface BankingAccount {
   customerDTO:          Customer;
 }
 
+
 export interface AccountOperation {
   id:            number;
   operationDate: Date;
   amount:        number;
-  type:          string;
+  operationType:          string;
   description:   string;
 }

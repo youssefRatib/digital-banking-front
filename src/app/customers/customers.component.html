@@ -26,6 +26,11 @@
             <td>{{c.name}}</td>
             <td>{{c.email}}</td>
             <td>
+              <button (click)="handleEditCustomer(c)" class="btn btn-warning text-white">
+                <i class="bi bi-pen"></i>
+              </button>
+            </td>
+            <td>
               <button (click)="handleDeleteCustomer(c)" class="btn btn-danger">
                 <i class="bi bi-trash"></i>
               </button>

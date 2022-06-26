@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {CustomerService} from "../services/customer.service";
-import {catchError, map, Observable, throwError} from "rxjs";
+import {catchError, elementAt, map, Observable, throwError} from "rxjs";
 import {Customer} from "../model/customer.model";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -41,18 +41,23 @@ export class CustomersComponent implements OnInit {
         this.customers=this.customers.pipe(
           map(data=>{
             let index=data.indexOf(c);
-            data.slice(index,1)
+            data.slice(index,1);
+            alert("bien supprimé")
             return data;
           })
         );
       },
       error : err => {
-        console.log(err);
+        alert(err.message);
       }
     })
   }
 
   handleCustomerAccounts(customer: Customer) {
     this.router.navigateByUrl("/customer-accounts/"+customer.id,{state :customer});
+  }
+
+  handleEditCustomer(customer: Customer) {
+    this.router.navigateByUrl("/edit-customer/"+customer.id,{state :customer});
   }
 }

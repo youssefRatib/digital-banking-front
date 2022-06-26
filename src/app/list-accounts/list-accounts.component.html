@@ -1,0 +1,47 @@
+<div class="container mt-2">
+  <ng-container *ngIf="accountsObservable | async as accounts">
+    <div class="card">
+      <div class="card-header">Accounts</div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>ID</th><th>Client</th><th>Type</th><th>Balance</th><th>Status</th><th>Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let ac of accounts.bankingAccounts">
+            <td>{{ac.id}}</td>
+            <td>{{ac.customerDTO.name}}</td>
+            <td>{{ac.type}}</td>
+            <td >{{ac.balance | number : '1.2-2'}}</td>
+            <td>{{ac.status}}</td>
+            <td>{{ac.createdAt | date : 'dd-MM-yyyy:HH-mm-ss'}}</td>
+
+            <td>
+              <button (click)="handleOperations(ac)" class="btn btn-success">
+                Opérations
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <ul class="nav nav-pills">
+          <li *ngFor="let item of [].constructor(accounts.totalPages);let page=index">
+            <a [ngClass]="page==currentPage?'btn-info':'btn-outline-info'" (click)="gotoPage(page)" class="btn  ms-1 mt-1">{{page}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #failureOrLading>
+    <ng-container *ngIf="errorMessage; else loading">
+      <div class="text-danger">
+        {{errorMessage}}
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      Loading .....
+    </ng-template>
+  </ng-template>
+</div>

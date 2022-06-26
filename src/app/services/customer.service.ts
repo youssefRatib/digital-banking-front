@@ -13,6 +13,9 @@ export class CustomerService {
   public getCustomers():Observable<Array<Customer>>{
     return this.http.get<Array<Customer>>(environment.backendHost+"/customers")
   }
+  public getCustomer(id:number):Observable<Customer>{
+    return this.http.get<Customer>(environment.backendHost+"/customer/"+id);
+  }
   public searchCustomers(keyword : string):Observable<Array<Customer>>{
     return this.http.get<Array<Customer>>(environment.backendHost+"/customers/search?keyword="+keyword)
   }
@@ -21,6 +24,9 @@ export class CustomerService {
   }
   public deleteCustomer(id: number){
     return this.http.delete(environment.backendHost+"/customers/"+id);
+  }
+  public editCustomer(data:Customer,id: number){
+    return this.http.put<Customer>(environment.backendHost+"/customers/"+id,data);
   }
 
 }
